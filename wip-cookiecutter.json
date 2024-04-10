@@ -1,0 +1,9 @@
+{
+  "full_name": "Engelbert Tijskens",
+  "email_address": "engelbert.tijskens@uantwerpen.be",
+  "github_username": "etijskens",
+  "project_name": "dpvssp",
+  "package_name": "dpvssp",
+  "project_short_description": "experimenting with SP vs DP numpy arrays",
+  "minimal_python_version": "3.11"
+}
