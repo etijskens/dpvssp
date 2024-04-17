@@ -70,13 +70,13 @@ def test_time():
     funs = [np.add, np.multiply, np.divide]
     for fun in funs:
         print(f"\n{fun.__name__}(a,b)")
-        runtime_table = time_fun(fun, repetitions=repetitions, shapes=shapes, n_arrays=2, verbose=True)
+        runtime_table = time_fun(fun, repetitions=repetitions, shapes=shapes, n_arrays=2)
         runtime_table.print()
 
     funs = [np.exp, np.sqrt]
     for fun in funs:
         print(f"\n{fun.__name__}(a)")
-        runtime_table = time_fun(fun, repetitions=repetitions, shapes=shapes, n_arrays=1, verbose=True)
+        runtime_table = time_fun(fun, repetitions=repetitions, shapes=shapes, n_arrays=1)
         runtime_table.print()
 
 
@@ -187,6 +187,39 @@ def test_RuntimeTable():
     tbl.add_performance()
     tbl.print()
 
+
+def heat_equation(a, t1, c, T, w2=0.111, Ethpi32rho=0.111, md2=0.111):
+    """
+    Args:
+        a : array
+        t1: array
+        c : array
+        T : array
+        w2: scalar
+        Ethpi32rho: scalar
+        md2: scalar
+    """
+    # simple numpy array operations (involving temporary arrays.)
+    a4dt   = (4*a)*t1
+    a4dtw2 = a4dt + w2
+
+    Trise = ( (Ethpi32rho / c)
+            / (np.sqrt(a4dt) * a4dtw2)
+            ) * np.exp( md2 / a4dtw2)
+    T += Trise
+
+
+def test_time_heat_equation():
+    repetitions = 50
+    shapes = [(int(10**n),) for n in range(4,6)]
+    funs = [heat_equation]
+    for fun in funs:
+        print(f"\n{fun.__name__}(a,t1,b,T) {repetitions=}")
+        runtime_table = time_fun(fun, repetitions=repetitions, shapes=shapes, n_arrays=2)
+        runtime_table.print()
+
+
+
 # ==============================================================================
 # The code below is for debugging a particular test in eclipse/pydev.
 # (otherwise all tests are normally run with pytest)
@@ -194,7 +227,7 @@ def test_RuntimeTable():
 # that the source directory is on the path
 # ==============================================================================
 if __name__ == "__main__":
-    the_test_you_want_to_debug = test_time
+    the_test_you_want_to_debug = test_time_heat_equation
 
     print("__main__ running", the_test_you_want_to_debug)
     the_test_you_want_to_debug()
