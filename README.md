@@ -6,7 +6,7 @@ The expectation that single precision arithmetic is in general twice as fast as 
 * vector registers therefore containt twice as much data items,
 * the bandwith in terms of data items per second is twice as big.
 
-Yet, in a previous project we struggled with achieving better performance in single precision (SP) than in double precision (DP). The setting was a Python/ program evaluating a function over a large number of points, stored as numpy arrays and using the numba.vectorize decorator.
+Yet, in a previous project (https://github.com/etijskens/exponential_decay) we struggled with achieving better performance in single precision (SP) than in double precision (DP). The setting was a Python/ program evaluating a function over a large number of points, stored as numpy arrays and using the numba.vectorize decorator.
 
 GJB reported in that respect:
 
@@ -99,6 +99,96 @@ Here are some results for some numpy array operators that were of interest in th
      float64 | (100000000,) | 0.0724   | 1.38e+09 |     
      float32 | (100000000,) | 0.0308   | 3.24e+09 | 2.35
 
+See [this stackoverflow issue](https://stackoverflow.com/questions/77028828/why-are-numpy-operations-with-float32-significantly-faster-than-float64), as to why numpy exponention is not faster in single precision.
+
+On Vaughan compute nodes the results are similar with the notable exception that now SP exponentiation is around 5 times faster than DP exponentiation. This suggests that SP exponentiation is vectorised and DP exponentiation not. 
+
+However, it does not explain the observation in the [exponential_decay project](https://github.com/etijskens/exponential_decay) that replacing DP with SP arrays did not improve the performance.
+
+    [results on Vaughan (compute node)]
+
+    add(a,b)
+	 dtype   | size         | s        | eval/s   | SP/DP
+	---------+--------------+----------+----------+-------
+	 float64 | (1000,)      | 1.71e-06 | 5.85e+08 |      
+	 float32 | (1000,)      | 1.47e-06 | 6.8e+08  | 1.16 
+	 float64 | (10000,)     | 4.76e-06 | 2.1e+09  |      
+	 float32 | (10000,)     | 3.13e-06 | 3.2e+09  | 1.52 
+	 float64 | (100000,)    | 4.4e-05  | 2.27e+09 |      
+	 float32 | (100000,)    | 2.21e-05 | 4.52e+09 | 1.99 
+	 float64 | (1000000,)   | 0.00113  | 8.81e+08 |      
+	 float32 | (1000000,)   | 0.000252 | 3.97e+09 | 4.51 
+	 float64 | (10000000,)  | 0.0149   | 6.7e+08  |      
+	 float32 | (10000000,)  | 0.00785  | 1.27e+09 | 1.9  
+	 float64 | (100000000,) | 0.143    | 7.01e+08 |      
+	 float32 | (100000000,) | 0.0717   | 1.39e+09 | 1.99 
 
 
-https://stackoverflow.com/questions/77028828/why-are-numpy-operations-with-float32-significantly-faster-than-float64
+    multiply(a,b)
+	 dtype   | size         | s        | eval/s   | SP/DP
+	---------+--------------+----------+----------+-------
+	 float64 | (1000,)      | 1.71e-06 | 5.85e+08 |      
+	 float32 | (1000,)      | 1.45e-06 | 6.9e+08  | 1.18 
+	 float64 | (10000,)     | 4.77e-06 | 2.1e+09  |      
+	 float32 | (10000,)     | 3.06e-06 | 3.27e+09 | 1.56 
+	 float64 | (100000,)    | 4.38e-05 | 2.29e+09 |      
+	 float32 | (100000,)    | 2.2e-05  | 4.54e+09 | 1.99 
+	 float64 | (1000000,)   | 0.00105  | 9.53e+08 |      
+	 float32 | (1000000,)   | 0.000249 | 4.02e+09 | 4.21 
+	 float64 | (10000000,)  | 0.015    | 6.67e+08 |      
+	 float32 | (10000000,)  | 0.00788  | 1.27e+09 | 1.9  
+	 float64 | (100000000,) | 0.143    | 6.98e+08 |      
+	 float32 | (100000000,) | 0.0719   | 1.39e+09 | 1.99 
+
+
+    divide(a,b)
+	 dtype   | size         | s        | eval/s   | SP/DP
+	---------+--------------+----------+----------+-------
+	 float64 | (1000,)      | 1.92e-06 | 5.21e+08 |      
+	 float32 | (1000,)      | 1.5e-06  | 6.67e+08 | 1.28 
+	 float64 | (10000,)     | 6.68e-06 | 1.5e+09  |      
+	 float32 | (10000,)     | 3.25e-06 | 3.08e+09 | 2.06 
+	 float64 | (100000,)    | 5.56e-05 | 1.8e+09  |      
+	 float32 | (100000,)    | 2.21e-05 | 4.52e+09 | 2.51 
+	 float64 | (1000000,)   | 0.00106  | 9.44e+08 |      
+	 float32 | (1000000,)   | 0.000248 | 4.04e+09 | 4.28 
+	 float64 | (10000000,)  | 0.0148   | 6.74e+08 |      
+	 float32 | (10000000,)  | 0.00783  | 1.28e+09 | 1.89 
+	 float64 | (100000000,) | 0.142    | 7.06e+08 |      
+	 float32 | (100000000,) | 0.0718   | 1.39e+09 | 1.97 
+
+
+    exp(a)
+	 dtype   | size         | s        | eval/s   | SP/DP
+	---------+--------------+----------+----------+-------
+	 float64 | (1000,)      | 1.47e-05 | 6.81e+07 |      
+	 float32 | (1000,)      | 3.81e-06 | 2.62e+08 | 3.86 
+	 float64 | (10000,)     | 0.000135 | 7.43e+07 |      
+	 float32 | (10000,)     | 2.6e-05  | 3.85e+08 | 5.18 
+	 float64 | (100000,)    | 0.00134  | 7.46e+07 |      
+	 float32 | (100000,)    | 0.000248 | 4.04e+08 | 5.42 
+	 float64 | (1000000,)   | 0.0135   | 7.43e+07 |      
+	 float32 | (1000000,)   | 0.00249  | 4.02e+08 | 5.41 
+	 float64 | (10000000,)  | 0.142    | 7.06e+07 |      
+	 float32 | (10000000,)  | 0.0302   | 3.31e+08 | 4.69 
+	 float64 | (100000000,) | 1.41     | 7.1e+07  |      
+	 float32 | (100000000,) | 0.297    | 3.37e+08 | 4.75 
+
+
+    sqrt(a)
+	 dtype   | size         | s        | eval/s   | SP/DP
+	---------+--------------+----------+----------+-------
+	 float64 | (1000,)      | 3.08e-06 | 3.25e+08 |      
+	 float32 | (1000,)      | 1.91e-06 | 5.24e+08 | 1.61 
+	 float64 | (10000,)     | 1.94e-05 | 5.17e+08 |      
+	 float32 | (10000,)     | 7.13e-06 | 1.4e+09  | 2.72 
+	 float64 | (100000,)    | 0.000183 | 5.47e+08 |      
+	 float32 | (100000,)    | 6.02e-05 | 1.66e+09 | 3.04 
+	 float64 | (1000000,)   | 0.00183  | 5.46e+08 |      
+	 float32 | (1000000,)   | 0.000587 | 1.7e+09  | 3.12 
+	 float64 | (10000000,)  | 0.0257   | 3.89e+08 |      
+	 float32 | (10000000,)  | 0.01     | 9.99e+08 | 2.57 
+	 float64 | (100000000,) | 0.249    | 4.02e+08 |      
+	 float32 | (100000000,) | 0.0939   | 1.07e+09 | 2.65 
+
+
