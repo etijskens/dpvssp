@@ -72,6 +72,7 @@ def test_time():
         print(f"\n{fun.__name__}(a,b)")
         runtime_table = time_fun(fun, repetitions=repetitions, shapes=shapes, n_arrays=2, verbose=True)
         runtime_table.print()
+
     funs = [np.exp, np.sqrt]
     for fun in funs:
         print(f"\n{fun.__name__}(a)")
@@ -79,7 +80,7 @@ def test_time():
         runtime_table.print()
 
 
-def time_fun(fun, repetitions, shapes, n_arrays=1, verbose=False):
+def time_fun(fun, repetitions, shapes, n_arrays=1):
     """Time the function `fun` """
 
     runtimes = RuntimeTable()
@@ -107,9 +108,6 @@ def time_fun(fun, repetitions, shapes, n_arrays=1, verbose=False):
 
             runtimes.append([dtype.__name__, shape, rt * 1e-9]) # ns -> s conversion
          
-            # if verbose:
-            #     print(f"{runtimes.data[-1]}")
-
     runtimes.add_performance()
     runtimes.add_speedup()
 
