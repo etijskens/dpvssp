@@ -215,7 +215,7 @@ def test_time_heat_equation():
     funs = [heat_equation]
     for fun in funs:
         print(f"\n{fun.__name__}(a,t1,b,T) {repetitions=}")
-        runtime_table = time_fun(fun, repetitions=repetitions, shapes=shapes, n_arrays=2)
+        runtime_table = time_fun(fun, repetitions=repetitions, shapes=shapes, n_arrays=4)
         runtime_table.print()
 
 
