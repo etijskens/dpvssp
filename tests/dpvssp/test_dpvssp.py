@@ -145,14 +145,14 @@ class RuntimeTable:
     def print(self):
         s = ''
         for i,row in enumerate(self.data):
-            s += ' '
+            s += '\t '
             for c,w in zip(row[:-1],self.widths[:-1]):
                 fc = self.format(c)
                 s += f'{fc:{w}} | '
             fc = self.format(row[-1])
             s += f'{fc:{self.widths[-1]}}\n'
             if i == 0:
-                s +='-'
+                s +='\t-'
                 for w in self.widths[:-1]:
                     s += w*'-' + '-+-'
                 s += self.widths[-1]*'-' + '-\n'
@@ -214,7 +214,7 @@ def test_time_heat_equation():
     shapes = [(int(10**n),) for n in range(4,6)]
     funs = [heat_equation]
     for fun in funs:
-        print(f"\n{fun.__name__}(a,t1,b,T) {repetitions=}")
+        print(f"\n\t{fun.__name__}(a,t1,b,T) {repetitions=}")
         runtime_table = time_fun(fun, repetitions=repetitions, shapes=shapes, n_arrays=4)
         runtime_table.print()
 
