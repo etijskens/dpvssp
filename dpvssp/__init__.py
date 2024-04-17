@@ -6,15 +6,22 @@
 
 __version__ = '0.0.0'
 
-# example code
-def hello(who: str = 'world') -> str:
-    """'Hello world' method.
+import numpy as np
+
+
+def generate_random_array(shape, dtype=np.float64) -> np.ndarray:
+    """Generate an array of random numbers between 0 and 1.
 
     Args:
-        who: whom to say hello to
+        shape: shape of the array
+        dtype: dtype of the array, a floating point type.
 
     Returns:
-        a string
+        an array with shape=`shape` and dtype=`dtype`.
     """
-    return f"Hello {who}!"
+
+    a = np.random.random(shape)
+    if not dtype in (float, np.float64):
+        a = a.astype(dtype=dtype)
+    return a
 
