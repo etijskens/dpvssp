@@ -11,9 +11,9 @@ from wiptools import get_workspace_dir
 
 sys.path.insert(0, str(get_workspace_dir(__file__) / 'exponential_decay'))
 
-from exponential_decay import get_matparms, rho
+from exponential_decay import rho, get_material_polynomials, get_material_slopes
 
 
 if __name__ == '__main__':
-    a,c = get_matparms(500)
+    a,c = get_material_polynomials()
     print('-*# finished #*-')

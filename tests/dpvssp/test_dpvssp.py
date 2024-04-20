@@ -1,15 +1,16 @@
 # -*- coding: utf-8 -*-
 
 """Tests for dpvssp package."""
-from pathlib import Path
+
 import sys
-p = Path(__file__).parent.parent.parent
-sys.path.insert(0, str(p))
+from wiptools import get_workspace_dir
+sys.path.insert(0, str(get_workspace_dir(__file__) / 'dpvssp'))
 
 import dpvssp
+from dpvssp.timing_tools import RuntimeTable
+
 import numpy as np
 from time import perf_counter_ns
-from pprint import pprint
 from tqdm import tqdm
 
 def test_generate_random_array():
