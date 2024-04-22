@@ -18,7 +18,7 @@ if __name__ == '__main__':
     runtime_table = RuntimeTable()
     experiment = 0
 
-    for n in (4, 16, 64, 256):
+    for n in (4, 16, 64, 256, 512):
         for blocked in (True, False):
             for float_type in (float64, float32):
                 t,x,y = generate_square(n, experiment, float_type)
@@ -26,7 +26,7 @@ if __name__ == '__main__':
                 if blocked:
                     description += '_blocked'
 
-                time_fun( compute_Txy, runtime_table, description, len(x), repetitions=1
+                time_fun( compute_Txy, runtime_table, description, len(x), repetitions=10
                         , t=t, x=x, y=y, T0=300, experiment=0, blocked=blocked
                         )
 

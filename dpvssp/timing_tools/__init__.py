@@ -76,13 +76,13 @@ def time_fun(fun, runtime_table, description, size, repetitions=10, **kwargs):
 
     rt = 1e24
     for r in range(repetitions):
-        print(f"{description} {size=}, {r}/{repetitions}", file=sys.stderr)
         tic = perf_counter_ns()
 
         result = fun(**kwargs)
 
         toc = perf_counter_ns() - tic
         rt = min(rt, toc)
+        print(f"{description} {size=}, {r}/{repetitions}: {toc=} min={rt}", file=sys.stderr)
 
     runtime_table.append([description, size, rt * 1e-9])  # ns -> s conversion
 
