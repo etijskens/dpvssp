@@ -59,14 +59,29 @@ class RuntimeTable:
             self.data[i].append(size / self.data[i][2])
             self.widths[-1] = max(self.widths[-1], len(self.format(self.data[i][-1])))
 
-    def add_speedup(self):
-        """Add columnn for speedup float32/float64"""
+    def add_speedup_precision(self):
+        """Add column for speedup float32/float64"""
         self.data[0].append('SP/DP')
         self.widths.append(5)
         for ir in range(1, self.nrows, 2):
             self.data[ir].append('')
             speedup = self.data[ir + 1][3] / self.data[ir][3]
             self.data[ir + 1].append(speedup)
+            self.widths[-1] = max(self.widths[-1], len(self.format(speedup)))
+
+    def add_speedup_blocked(self):
+        """Add column for speedup blocked/not blocked."""
+
+        self.data[0].append('bl/nb')
+        self.widths.append(5)
+        for ir in range(1, self.nrows, 4):
+            self.data[ir  ].append('')
+            self.data[ir+1].append('')
+            speedup = self.data[ir + 2][3] / self.data[ir][3]
+            self.data[ir + 2].append(speedup)
+            self.widths[-1] = max(self.widths[-1], len(self.format(speedup)))
+            speedup = self.data[ir + 3][3] / self.data[ir+1][3]
+            self.data[ir + 3].append(speedup)
             self.widths[-1] = max(self.widths[-1], len(self.format(speedup)))
 
 
@@ -76,13 +91,14 @@ def time_fun(fun, runtime_table, description, size, repetitions=10, **kwargs):
 
     rt = 1e24
     for r in range(repetitions):
+        print(f"{description} {size=}, {r}/{repetitions}: ...", file=sys.stderr)
         tic = perf_counter_ns()
 
         result = fun(**kwargs)
 
         toc = perf_counter_ns() - tic
         rt = min(rt, toc)
-        print(f"{description} {size=}, {r}/{repetitions}: {toc=} min={rt}", file=sys.stderr)
+        print(f"{description} {size=}, {r}/{repetitions}: {toc=} {'*' if rt == toc else ''}", file=sys.stderr, flush=True)
 
     runtime_table.append([description, size, rt * 1e-9])  # ns -> s conversion
 

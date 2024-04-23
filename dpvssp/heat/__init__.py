@@ -3,6 +3,7 @@
 """
 ## Python (sub)module heat
 """
+import sys
 
 import dpvssp.heat.process  as process
 import dpvssp.heat.material as material
@@ -18,6 +19,7 @@ def compute_Txy(t, x, y=0.0, T0=300.
                 , report_n_clipped=False
                 , ufunc=''
                 , blocked=False
+                , verbose=False
                 ):
     """Compute the temperature rise at the origin for the time/pulse location
     table `(t,x,y)`.
@@ -100,6 +102,7 @@ def compute_Txy(t, x, y=0.0, T0=300.
         # Compute the time slices in blocks that optimize cache utilization
         L1cache = 32 * 1024
         blocksize = L1cache // t.dtype.itemsize // 7
+        # 7 and 8 give approximately the same performance, 6 is slightly worse.
         nblocks = int(np.ceil(n_pulses / blocksize))
     else:
         # only one block
@@ -111,6 +114,8 @@ def compute_Txy(t, x, y=0.0, T0=300.
         blockstop = min(blockstart + blocksize, n_pulses)
 
         for i in range(blockstart, blockstop):
+            if verbose and i%1000==0:
+                print(f"{i}/{blockstop}", file=sys.stderr, flush=True)
             # slice of of times pulse i contributes to
             slice = np.s_[i:blockstop:]
 
@@ -151,7 +156,7 @@ def compute_Txy(t, x, y=0.0, T0=300.
 
             # elif ufunc == 'ufunc':
             #     # use numpy universal func by numba
-            #     Trise = ufunc_Trise(Ethpi32rho, w2
+            #     Trise = ufunc_Trise( Ethpi32rho, w2
             #                         , _a[slice], _c[slice]
             #                         , md2
             #                         , t1[slice]
