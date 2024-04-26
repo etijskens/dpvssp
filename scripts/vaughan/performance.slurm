@@ -11,4 +11,4 @@
 . ./env.sh
 
 # srun python ../../tests/dpvssp/test_dpvssp.py
-srun python ../../scripts/time_heat_equation.py
+srun python ../time_heat_equation.py
