@@ -319,3 +319,28 @@ However, it does not explain the observation in the [exponential_decay project](
 	 float32_399x399_blocked       | 12672558801 | 4.37   | 2.9e+09  | 0.894 |      
 	 float64_399x399_blocked_afunc | 12672558801 | 3.44   | 3.69e+09 |       | 1.14 
 	 float32_399x399_blocked_afunc | 12672558801 | 3.68   | 3.44e+09 | 0.935 | 1.19 
+
+	vaughan
+	repetitions = 5
+	 description                   | size        | s     | eval/s   | SP/DP | bl/nb
+	-------------------------------+-------------+-------+----------+-------+-------
+	 float64_49x49_blocked         | 2883601     | 0.272 | 1.06e+07 |       |      
+	 float32_49x49_blocked         | 2883601     | 0.283 | 1.02e+07 | 0.963 |      
+	 float64_49x49_blocked_afunc   | 2883601     | 0.225 | 1.28e+07 |       | 1.21 
+	 float32_49x49_blocked_afunc   | 2883601     | 0.244 | 1.18e+07 | 0.923 | 1.16 
+	 float64_99x99_blocked         | 48034701    | 1.12  | 4.28e+07 |       |      
+	 float32_99x99_blocked         | 48034701    | 1.16  | 4.13e+07 | 0.965 |      
+	 float64_99x99_blocked_afunc   | 48034701    | 0.92  | 5.22e+07 |       | 1.22 
+	 float32_99x99_blocked_afunc   | 48034701    | 0.989 | 4.86e+07 | 0.931 | 1.18 
+	 float64_199x199_blocked       | 784139401   | 4.53  | 1.73e+08 |       |      
+	 float32_199x199_blocked       | 784139401   | 4.68  | 1.67e+08 | 0.966 |      
+	 float64_199x199_blocked_afunc | 784139401   | 3.7   | 2.12e+08 |       | 1.22 
+	 float32_199x199_blocked_afunc | 784139401   | 4.01  | 1.96e+08 | 0.924 | 1.17 
+	 float64_399x399_blocked       | 12672558801 | 18.3  | 6.94e+08 |       |      
+	 float32_399x399_blocked       | 12672558801 | 18.8  | 6.73e+08 | 0.969 |      
+	 float64_399x399_blocked_afunc | 12672558801 | 14.9  | 8.48e+08 |       | 1.22 
+	 float32_399x399_blocked_afunc | 12672558801 | 16    | 7.9e+08  | 0.932 | 1.17 
+
+## conclusion
+
+Nothing helps and i have no clue...

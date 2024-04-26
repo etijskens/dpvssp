@@ -38,7 +38,7 @@ class RuntimeTable:
         self.data.append(row)
 
     def print(self):
-        s = f'\t{os.environ['VSC_INSTITUTE_CLUSTER']}\n' \
+        s = f"\t{os.environ['VSC_INSTITUTE_CLUSTER']}\n" \
             f'\trepetitions = {self.repetitions}\n'
         for i, row in enumerate(self.data):
             s += '\t '
