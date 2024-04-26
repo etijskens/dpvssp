@@ -3,6 +3,7 @@
 """
 ## Python (sub)module timing_tools
 """
+import os
 import sys
 from time import perf_counter_ns
 
@@ -37,7 +38,8 @@ class RuntimeTable:
         self.data.append(row)
 
     def print(self):
-        s = f'repetitions = {self.repetitions}\n'
+        s = f'\t{os.environ['VSC_INSTITUTE_CLUSTER']}\n' \
+            f'\trepetitions = {self.repetitions}\n'
         for i, row in enumerate(self.data):
             s += '\t '
             for c, w in zip(row[:-1], self.widths[:-1]):

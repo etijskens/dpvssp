@@ -22,7 +22,7 @@ if __name__ == '__main__':
         print(f"{n=}")
         # for blocked in (False,True):
         blocked = True
-        for ufunc in ('', 'ufunc'):
+        for ufunc in ('', 'afunc'):
             for float_type in (float64, float32):
                 t,x,y = generate_square(n, experiment, float_type)
                 description = f'{float_type.__name__}_{2*n+1}x{2*n+1}'

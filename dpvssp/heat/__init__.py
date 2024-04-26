@@ -4,6 +4,10 @@
 ## Python (sub)module heat
 """
 import sys
+from wiptools import get_workspace_dir
+sys.path.insert(0, str(get_workspace_dir(__file__) / 'exponential_decay'))
+
+from exponential_decay.afunc import afuncDP, afuncSP
 
 import dpvssp.heat.process  as process
 import dpvssp.heat.material as material
@@ -170,17 +174,17 @@ def compute_Txy(t, x, y=0.0, T0=300.
                             , T[slice]
                             )
 
-            # elif ufunc == 'afunc':
-            #     if dtype in (float, np.float64):
-            #         afuncDP(Ethpi32rho, w2, _a[slice], _c[slice], md2, t1[slice]
-            #                 , T[slice]
-            #                 )
-            #     elif dtype is np.float32:
-            #         afuncSP(Ethpi32rho, w2, _a[slice], _c[slice], md2, t1[slice]
-            #                 , T[slice]
-            #                 )
-            #     else:
-            #         raise NotImplementedError(f'Unknown dtype: {dtype}')
+            elif ufunc == 'afunc':
+                if float_type is np.float64:
+                    afuncDP( Ethpi32rho, w2, _a[slice], _c[slice], md2, t1[slice]
+                            , T[slice]
+                            )
+                elif float_type is np.float32:
+                    afuncSP( Ethpi32rho, w2, _a[slice], _c[slice], md2, t1[slice]
+                            , T[slice]
+                            )
+                else:
+                    raise NotImplementedError(f'Unknown float_type: {float_type}')
 
             else:
                 raise NotImplementedError(f'ufunc `{ufunc}` not supported')

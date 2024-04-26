@@ -297,3 +297,25 @@ However, it does not explain the observation in the [exponential_decay project](
 	 float64_399x399_blocked_ufunc | 12672558801 | 16.2  | 7.81e+08 |       | 1.15 
 	 float32_399x399_blocked_ufunc | 12672558801 | 18.2  | 6.97e+08 | 0.893 | 1.04 
 
+### SP vs DP, blocked, Numpy array operations vs C++ implementation
+
+	macbook-m3
+	repetitions = 5
+	 description                   | size        | s      | eval/s   | SP/DP | bl/nb
+	-------------------------------+-------------+--------+----------+-------+-------
+	 float64_49x49_blocked         | 2883601     | 0.056  | 5.15e+07 |       |      
+	 float32_49x49_blocked         | 2883601     | 0.0602 | 4.79e+07 | 0.931 |      
+	 float64_49x49_blocked_afunc   | 2883601     | 0.0457 | 6.31e+07 |       | 1.23 
+	 float32_49x49_blocked_afunc   | 2883601     | 0.0499 | 5.78e+07 | 0.916 | 1.21 
+	 float64_99x99_blocked         | 48034701    | 0.228  | 2.11e+08 |       |      
+	 float32_99x99_blocked         | 48034701    | 0.255  | 1.88e+08 | 0.893 |      
+	 float64_99x99_blocked_afunc   | 48034701    | 0.195  | 2.47e+08 |       | 1.17 
+	 float32_99x99_blocked_afunc   | 48034701    | 0.213  | 2.26e+08 | 0.916 | 1.2  
+	 float64_199x199_blocked       | 784139401   | 0.932  | 8.41e+08 |       |      
+	 float32_199x199_blocked       | 784139401   | 0.999  | 7.85e+08 | 0.933 |      
+	 float64_199x199_blocked_afunc | 784139401   | 0.759  | 1.03e+09 |       | 1.23 
+	 float32_199x199_blocked_afunc | 784139401   | 0.872  | 8.99e+08 | 0.87  | 1.15 
+	 float64_399x399_blocked       | 12672558801 | 3.91   | 3.24e+09 |       |      
+	 float32_399x399_blocked       | 12672558801 | 4.37   | 2.9e+09  | 0.894 |      
+	 float64_399x399_blocked_afunc | 12672558801 | 3.44   | 3.69e+09 |       | 1.14 
+	 float32_399x399_blocked_afunc | 12672558801 | 3.68   | 3.44e+09 | 0.935 | 1.19 
