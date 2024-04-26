@@ -8,11 +8,12 @@ from time import perf_counter_ns
 
 
 class RuntimeTable:
-    def __init__(self):
+    def __init__(self, repetitions=1):
         columns = ['description', 'size', 's']
         self.widths = [0] * len(columns)
         self.data = []
         self.append(columns)
+        self.repetitions = repetitions
 
     @property
     def ncols(self):
@@ -36,7 +37,7 @@ class RuntimeTable:
         self.data.append(row)
 
     def print(self):
-        s = ''
+        s = f'repetitions = {self.repetitions}\n'
         for i, row in enumerate(self.data):
             s += '\t '
             for c, w in zip(row[:-1], self.widths[:-1]):

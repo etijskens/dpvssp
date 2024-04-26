@@ -16,7 +16,6 @@ This project will carry out experiments to quantify these expectations.
 
 Here are some results for some numpy array operators that were of interest in the previous project, addition, multiplication, division, exponentiation and square root. All operators show a performance ratio `SP/DP` of about 2, for large enough array sizes, except exponentiation, which has a performance ratio of 1. In addition it is 6 times slower than the square root operator.
 
-
     [Results on Apple M3 Pro]
 
     numpy.add(a,b)
@@ -99,7 +98,7 @@ Here are some results for some numpy array operators that were of interest in th
      float64 | (100000000,) | 0.0724   | 1.38e+09 |     
      float32 | (100000000,) | 0.0308   | 3.24e+09 | 2.35
 
-See [this stackoverflow issue](https://stackoverflow.com/questions/77028828/why-are-numpy-operations-with-float32-significantly-faster-than-float64), as to why numpy exponention is not faster in single precision.
+See [this stackoverflow issue](https://stackoverflow.com/questions/77028828/why-are-numpy-operations-with-float32-significantly-faster-than-float64), as to why numpy exponentation is not faster in single precision.
 
 On Vaughan compute nodes the results are similar with the notable exception that now SP exponentiation is around 5 times faster than DP exponentiation. This suggests that SP exponentiation is vectorised and DP exponentiation not. 
 
@@ -192,6 +191,7 @@ However, it does not explain the observation in the [exponential_decay project](
 	 float32 | (100000000,) | 0.0939   | 1.07e+09 | 2.65 
 
 ## The heat equation revisited
+### SP vs DP, blocked vs not blocked, Numpy array operations
 
     L1/7
 	 description             | size      | s      | eval/s   | SP/DP | bl/nb
@@ -208,3 +208,47 @@ However, it does not explain the observation in the [exponential_decay project](
 	 float32_199x199         | 784139401 | 5.76   | 1.36e+08 | 1.39  |      
 	 float64_199x199_blocked | 784139401 | 1      | 7.84e+08 |       | 8.01 
 	 float32_199x199_blocked | 784139401 | 1.07   | 7.31e+08 | 0.933 | 5.37 
+
+### SP vs DP, blocked, Numpy array operations vs Numba.vectorize
+
+	repetitions = 5
+	 description                   | size        | s      | eval/s   | SP/DP | bl/nb
+	-------------------------------+-------------+--------+----------+-------+-------
+	 float64_49x49_blocked         | 2883601     | 0.0593 | 4.86e+07 |       |      
+	 float32_49x49_blocked         | 2883601     | 0.0602 | 4.79e+07 | 0.984 |      
+	 float64_49x49_blocked_ufunc   | 2883601     | 0.0492 | 5.86e+07 |       | 1.21 
+	 float32_49x49_blocked_ufunc   | 2883601     | 0.0542 | 5.32e+07 | 0.907 | 1.11 
+	 float64_99x99_blocked         | 48034701    | 0.236  | 2.04e+08 |       |      
+	 float32_99x99_blocked         | 48034701    | 0.259  | 1.85e+08 | 0.91  |      
+	 float64_99x99_blocked_ufunc   | 48034701    | 0.211  | 2.27e+08 |       | 1.12 
+	 float32_99x99_blocked_ufunc   | 48034701    | 0.224  | 2.15e+08 | 0.944 | 1.16 
+	 float64_199x199_blocked       | 784139401   | 0.928  | 8.45e+08 |       |      
+	 float32_199x199_blocked       | 784139401   | 1      | 7.84e+08 | 0.927 |      
+	 float64_199x199_blocked_ufunc | 784139401   | 0.838  | 9.35e+08 |       | 1.11 
+	 float32_199x199_blocked_ufunc | 784139401   | 0.929  | 8.44e+08 | 0.902 | 1.08 
+	 float64_399x399_blocked       | 12672558801 | 3.89   | 3.26e+09 |       |      
+	 float32_399x399_blocked       | 12672558801 | 4.23   | 3e+09    | 0.92  |      
+	 float64_399x399_blocked_ufunc | 12672558801 | 3.47   | 3.65e+09 |       | 1.12 
+	 float32_399x399_blocked_ufunc | 12672558801 | 3.85   | 3.29e+09 | 0.901 | 1.1  
+
+### SP vs DP, blocked, Numpy array operations vs Numba.guvectorize
+
+	repetitions = 5
+     description                    | size        | s      | eval/s   | SP/DP | np/gu
+	--------------------------------+-------------+--------+----------+-------+-------
+	 float64_49x49_blocked          | 2883601     | 0.0565 | 5.1e+07  |       |      
+	 float32_49x49_blocked          | 2883601     | 0.0606 | 4.76e+07 | 0.933 |      
+	 float64_49x49_blocked_gufunc   | 2883601     | 0.0474 | 6.09e+07 |       | 1.19 
+	 float32_49x49_blocked_gufunc   | 2883601     | 0.0563 | 5.12e+07 | 0.841 | 1.08 
+	 float64_99x99_blocked          | 48034701    | 0.231  | 2.08e+08 |       |      
+	 float32_99x99_blocked          | 48034701    | 0.257  | 1.87e+08 | 0.898 |      
+	 float64_99x99_blocked_gufunc   | 48034701    | 0.205  | 2.34e+08 |       | 1.13 
+	 float32_99x99_blocked_gufunc   | 48034701    | 0.233  | 2.06e+08 | 0.878 | 1.1  
+	 float64_199x199_blocked        | 784139401   | 0.942  | 8.32e+08 |       |      
+	 float32_199x199_blocked        | 784139401   | 1.01   | 7.73e+08 | 0.929 |      
+	 float64_199x199_blocked_gufunc | 784139401   | 0.8    | 9.8e+08  |       | 1.18 
+	 float32_199x199_blocked_gufunc | 784139401   | 0.956  | 8.2e+08  | 0.837 | 1.06 
+	 float64_399x399_blocked        | 12672558801 | 3.9    | 3.25e+09 |       |      
+	 float32_399x399_blocked        | 12672558801 | 4.21   | 3.01e+09 | 0.928 |      
+	 float64_399x399_blocked_gufunc | 12672558801 | 3.33   | 3.81e+09 |       | 1.17 
+	 float32_399x399_blocked_gufunc | 12672558801 | 4      | 3.17e+09 | 0.832 | 1.05 
