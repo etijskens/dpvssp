@@ -211,8 +211,9 @@ However, it does not explain the observation in the [exponential_decay project](
 
 ### SP vs DP, blocked, Numpy array operations vs Numba.vectorize
 
+	macbook pro m3
 	repetitions = 5
-	 description                   | size        | s      | eval/s   | SP/DP | bl/nb
+	 description                   | size        | s      | eval/s   | SP/DP | np/u
 	-------------------------------+-------------+--------+----------+-------+-------
 	 float64_49x49_blocked         | 2883601     | 0.0593 | 4.86e+07 |       |      
 	 float32_49x49_blocked         | 2883601     | 0.0602 | 4.79e+07 | 0.984 |      
@@ -231,8 +232,30 @@ However, it does not explain the observation in the [exponential_decay project](
 	 float64_399x399_blocked_ufunc | 12672558801 | 3.47   | 3.65e+09 |       | 1.12 
 	 float32_399x399_blocked_ufunc | 12672558801 | 3.85   | 3.29e+09 | 0.901 | 1.1  
 
+	Vaughan
+	repetitions = 5
+	 description                   | size        | s     | eval/s   | SP/DP | np/u
+	-------------------------------+-------------+-------+----------+-------+-------
+	 float64_49x49_blocked         | 2883601     | 0.28  | 1.03e+07 |       |      
+	 float32_49x49_blocked         | 2883601     | 0.285 | 1.01e+07 | 0.981 |      
+	 float64_49x49_blocked_ufunc   | 2883601     | 0.244 | 1.18e+07 |       | 1.15 
+	 float32_49x49_blocked_ufunc   | 2883601     | 0.273 | 1.06e+07 | 0.894 | 1.05 
+	 float64_99x99_blocked         | 48034701    | 1.14  | 4.22e+07 |       |      
+	 float32_99x99_blocked         | 48034701    | 1.17  | 4.12e+07 | 0.976 |      
+	 float64_99x99_blocked_ufunc   | 48034701    | 1     | 4.8e+07  |       | 1.14 
+	 float32_99x99_blocked_ufunc   | 48034701    | 1.11  | 4.31e+07 | 0.897 | 1.05 
+	 float64_199x199_blocked       | 784139401   | 4.6   | 1.7e+08  |       |      
+	 float32_199x199_blocked       | 784139401   | 4.73  | 1.66e+08 | 0.973 |      
+	 float64_199x199_blocked_ufunc | 784139401   | 4.02  | 1.95e+08 |       | 1.15 
+	 float32_199x199_blocked_ufunc | 784139401   | 4.51  | 1.74e+08 | 0.891 | 1.05 
+	 float64_399x399_blocked       | 12672558801 | 18.7  | 6.79e+08 |       |      
+	 float32_399x399_blocked       | 12672558801 | 18.9  | 6.69e+08 | 0.985 |      
+	 float64_399x399_blocked_ufunc | 12672558801 | 16.2  | 7.81e+08 |       | 1.15 
+	 float32_399x399_blocked_ufunc | 12672558801 | 18.2  | 6.97e+08 | 0.893 | 1.04 
+
 ### SP vs DP, blocked, Numpy array operations vs Numba.guvectorize
 
+	macbook pro m3
 	repetitions = 5
      description                    | size        | s      | eval/s   | SP/DP | np/gu
 	--------------------------------+-------------+--------+----------+-------+-------
@@ -252,3 +275,25 @@ However, it does not explain the observation in the [exponential_decay project](
 	 float32_399x399_blocked        | 12672558801 | 4.21   | 3.01e+09 | 0.928 |      
 	 float64_399x399_blocked_gufunc | 12672558801 | 3.33   | 3.81e+09 |       | 1.17 
 	 float32_399x399_blocked_gufunc | 12672558801 | 4      | 3.17e+09 | 0.832 | 1.05 
+
+	Vaughan
+	repetitions = 5
+	 description                   | size        | s     | eval/s   | SP/DP | np/gu
+	-------------------------------+-------------+-------+----------+-------+-------
+	 float64_49x49_blocked         | 2883601     | 0.28  | 1.03e+07 |       |      
+	 float32_49x49_blocked         | 2883601     | 0.285 | 1.01e+07 | 0.981 |      
+	 float64_49x49_blocked_ufunc   | 2883601     | 0.244 | 1.18e+07 |       | 1.15 
+	 float32_49x49_blocked_ufunc   | 2883601     | 0.273 | 1.06e+07 | 0.894 | 1.05 
+	 float64_99x99_blocked         | 48034701    | 1.14  | 4.22e+07 |       |      
+	 float32_99x99_blocked         | 48034701    | 1.17  | 4.12e+07 | 0.976 |      
+	 float64_99x99_blocked_ufunc   | 48034701    | 1     | 4.8e+07  |       | 1.14 
+	 float32_99x99_blocked_ufunc   | 48034701    | 1.11  | 4.31e+07 | 0.897 | 1.05 
+	 float64_199x199_blocked       | 784139401   | 4.6   | 1.7e+08  |       |      
+	 float32_199x199_blocked       | 784139401   | 4.73  | 1.66e+08 | 0.973 |      
+	 float64_199x199_blocked_ufunc | 784139401   | 4.02  | 1.95e+08 |       | 1.15 
+	 float32_199x199_blocked_ufunc | 784139401   | 4.51  | 1.74e+08 | 0.891 | 1.05 
+	 float64_399x399_blocked       | 12672558801 | 18.7  | 6.79e+08 |       |      
+	 float32_399x399_blocked       | 12672558801 | 18.9  | 6.69e+08 | 0.985 |      
+	 float64_399x399_blocked_ufunc | 12672558801 | 16.2  | 7.81e+08 |       | 1.15 
+	 float32_399x399_blocked_ufunc | 12672558801 | 18.2  | 6.97e+08 | 0.893 | 1.04 
+
