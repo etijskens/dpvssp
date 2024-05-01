@@ -353,3 +353,5 @@ is summed over a grid of sequential pulses.
 ## conclusion
 
 Nothing helps and i have no clue...
+
+Next step is to profile this stuff on LUMI-C to - hopefully - reveal the reason why SP is not faster.
