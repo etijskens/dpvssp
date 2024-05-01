@@ -191,6 +191,15 @@ However, it does not explain the observation in the [exponential_decay project](
 	 float32 | (100000000,) | 0.0939   | 1.07e+09 | 2.65 
 
 ## The heat equation revisited
+
+The single pulse equation
+
+$$
+T_p(x,y,z,t)=\frac{2E_{th}}{\pi\rho c \sqrt{\pi\alpha t}(8\alpha t + \omega_0^2)}\exp(-2\frac{(x-x_p)^2 + (y-y_p)^2}{8\alpha t + \omega_0^2})\exp(-\frac{(z-z_p)^2}{4\alpha t})
+$$
+
+is summed over a grid of sequential pulses.
+
 ### SP vs DP, blocked vs not blocked, Numpy array operations
 
     L1/7
