@@ -218,6 +218,27 @@ is summed over a grid of sequential pulses.
 	 float64_199x199_blocked | 784139401 | 1      | 7.84e+08 |       | 8.01 
 	 float32_199x199_blocked | 784139401 | 1.07   | 7.31e+08 | 0.933 | 5.37 
 
+	lumi
+	repetitions = 5
+	 description             | size        | s     | eval/s   | SP/DP | bl/nb
+	-------------------------+-------------+-------+----------+-------+-------
+	 float64_49x49           | 2883601     | 0.283 | 1.02e+07 |       |
+	 float32_49x49           | 2883601     | 0.239 | 1.21e+07 | 1.18  |
+	 float64_49x49_blocked   | 2883601     | 0.218 | 1.32e+07 |       | 1.3
+	 float32_49x49_blocked   | 2883601     | 0.231 | 1.25e+07 | 0.942 | 1.03
+	 float64_99x99           | 48034701    | 1.69  | 2.84e+07 |       |
+	 float32_99x99           | 48034701    | 1.24  | 3.88e+07 | 1.36  |
+	 float64_99x99_blocked   | 48034701    | 0.868 | 5.53e+07 |       | 1.95
+	 float32_99x99_blocked   | 48034701    | 0.9   | 5.34e+07 | 0.964 | 1.38
+	 float64_199x199         | 784139401   | 17.7  | 4.43e+07 |       |
+	 float32_199x199         | 784139401   | 9.34  | 8.39e+07 | 1.89  |
+	 float64_199x199_blocked | 784139401   | 3.58  | 2.19e+08 |       | 4.94
+	 float32_199x199_blocked | 784139401   | 3.67  | 2.14e+08 | 0.977 | 2.55
+	 float64_399x399         | 12672558801 | 261   | 4.86e+07 |       |
+	 float32_399x399         | 12672558801 | 112   | 1.13e+08 | 2.33  |
+	 float64_399x399_blocked | 12672558801 | 14.2  | 8.92e+08 |       | 18.4
+	 float32_399x399_blocked | 12672558801 | 14.8  | 8.57e+08 | 0.961 | 7.57
+	 
 ### SP vs DP, blocked, Numpy array operations vs Numba.vectorize
 
 	macbook pro m3
@@ -310,7 +331,7 @@ is summed over a grid of sequential pulses.
 
 	macbook-m3
 	repetitions = 5
-	 description                   | size        | s      | eval/s   | SP/DP | bl/nb
+	 description                   | size        | s      | eval/s   | SP/DP | np/C++
 	-------------------------------+-------------+--------+----------+-------+-------
 	 float64_49x49_blocked         | 2883601     | 0.056  | 5.15e+07 |       |      
 	 float32_49x49_blocked         | 2883601     | 0.0602 | 4.79e+07 | 0.931 |      
@@ -331,7 +352,7 @@ is summed over a grid of sequential pulses.
 
 	vaughan
 	repetitions = 5
-	 description                   | size        | s     | eval/s   | SP/DP | bl/nb
+	 description                   | size        | s     | eval/s   | SP/DP | np/C++
 	-------------------------------+-------------+-------+----------+-------+-------
 	 float64_49x49_blocked         | 2883601     | 0.272 | 1.06e+07 |       |      
 	 float32_49x49_blocked         | 2883601     | 0.283 | 1.02e+07 | 0.963 |      
@@ -349,6 +370,27 @@ is summed over a grid of sequential pulses.
 	 float32_399x399_blocked       | 12672558801 | 18.8  | 6.73e+08 | 0.969 |      
 	 float64_399x399_blocked_afunc | 12672558801 | 14.9  | 8.48e+08 |       | 1.22 
 	 float32_399x399_blocked_afunc | 12672558801 | 16    | 7.9e+08  | 0.932 | 1.17 
+
+	lumi
+	repetitions = 5
+	 description                   | size        | s     | eval/s   | SP/DP | np/C++
+	-------------------------------+-------------+-------+----------+-------+-------
+	 float64_49x49_blocked         | 2883601     | 0.295 | 9.78e+06 |       |
+	 float32_49x49_blocked         | 2883601     | 0.248 | 1.16e+07 | 1.19  |
+	 float64_49x49_blocked_afunc   | 2883601     | 0.183 | 1.57e+07 |       | 1.61
+	 float32_49x49_blocked_afunc   | 2883601     | 0.19  | 1.52e+07 | 0.966 | 1.31
+	 float64_99x99_blocked         | 48034701    | 0.88  | 5.46e+07 |       |
+	 float32_99x99_blocked         | 48034701    | 0.914 | 5.26e+07 | 0.963 |
+	 float64_99x99_blocked_afunc   | 48034701    | 0.744 | 6.46e+07 |       | 1.18
+	 float32_99x99_blocked_afunc   | 48034701    | 0.778 | 6.18e+07 | 0.956 | 1.17
+	 float64_199x199_blocked       | 784139401   | 3.54  | 2.21e+08 |       |
+	 float32_199x199_blocked       | 784139401   | 3.65  | 2.15e+08 | 0.972 |
+	 float64_199x199_blocked_afunc | 784139401   | 2.95  | 2.66e+08 |       | 1.2
+	 float32_199x199_blocked_afunc | 784139401   | 3.15  | 2.49e+08 | 0.936 | 1.16
+	 float64_399x399_blocked       | 12672558801 | 14.4  | 8.8e+08  |       |
+	 float32_399x399_blocked       | 12672558801 | 14.9  | 8.52e+08 | 0.968 |
+	 float64_399x399_blocked_afunc | 12672558801 | 11.9  | 1.06e+09 |       | 1.21
+	 float32_399x399_blocked_afunc | 12672558801 | 12.7  | 1e+09    | 0.943 | 1.18
 
 ## conclusion
 

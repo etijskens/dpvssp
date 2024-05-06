@@ -20,20 +20,19 @@ if __name__ == '__main__':
     experiment = 0
     for n in ( 24, 49, 99, 199):
         print(f"{n=}")
-        # for blocked in (False,True):
-        blocked = True
-        for ufunc in ('', 'afunc'):
-            for float_type in (float64, float32):
-                t,x,y = generate_square(n, experiment, float_type)
-                description = f'{float_type.__name__}_{2*n+1}x{2*n+1}'
-                if blocked:
-                    description += '_blocked'
-                if ufunc:
-                    description += f'_{ufunc}'
-                size = len(x) * (len(x) + 1) // 2
-                time_fun( compute_Txy, runtime_table, description, size, repetitions=repetitions
-                        , t=t, x=x, y=y, T0=300, experiment=0, blocked=blocked, ufunc=ufunc, verbose=False
-                        )
+        for blocked in (False,True):
+            for ufunc in ('',):
+                for float_type in (float64, float32):
+                    t,x,y = generate_square(n, experiment, float_type)
+                    description = f'{float_type.__name__}_{2*n+1}x{2*n+1}'
+                    if blocked:
+                        description += '_blocked'
+                    if ufunc:
+                        description += f'_{ufunc}'
+                    size = len(x) * (len(x) + 1) // 2
+                    time_fun( compute_Txy, runtime_table, description, size, repetitions=repetitions
+                            , t=t, x=x, y=y, T0=300, experiment=0, blocked=blocked, ufunc=ufunc, verbose=False
+                            )
 
     runtime_table.add_performance()
     runtime_table.add_speedup_precision()

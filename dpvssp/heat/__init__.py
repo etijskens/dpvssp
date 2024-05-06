@@ -15,7 +15,11 @@ import dpvssp.heat.geometry as geometry
 
 from numpy import pi
 import numpy as np
-from numba import vectorize, float32, float64, guvectorize
+try:
+    from numba import vectorize, float32, float64, guvectorize
+    has_numba = True
+except:
+    has_numba = False
 
 def compute_Txy(t, x, y=0.0, T0=300.
                 , experiment: int = 0
@@ -194,35 +198,36 @@ def compute_Txy(t, x, y=0.0, T0=300.
         print(f"ntot_clipped = {ntot_clipped}/{ntot} = {100 * ntot_clipped / ntot:5.1f}%\n")
     return T
 
-@vectorize([ float32(float32, float32, float32, float32, float32, float32)
-           , float64(float64, float64, float64, float64, float64, float64)
-           ])
-def ufunc_Trise( Ethpi32rho, w2
-               , a, c
-               , md2 # - (xi-xc)**2 - (yi-yc)**2
-               , dt
-               ):
-    _a4dt   = (4*a)*dt
-    _a4dtw2 = _a4dt + w2
-
-    # Compute temperature rise of pulse i at all subsequent times
-    Trise = ( (Ethpi32rho / c) / (np.sqrt(_a4dt) * _a4dtw2) ) * np.exp( md2 / _a4dtw2 )
-    return Trise
-
-
-@guvectorize([(float64, float64, float64[:], float64[:], float64, float64[:], float64[:])
-             ,(float32, float32, float32[:], float32[:], float32, float32[:], float32[:])
-             ], '(),(),(n),(n),(),(n)->(n)')
-def gufunc_Trise( Ethpi32rho, w2    # input
-                , a, c              # input
-                , md2               # input
-                , dt                # input
-                , T  # input/output
-):
-    for i in range(T.shape[0]):
-        _a4dt   = (4*a[i])*dt[i]
+if has_numba:
+    @vectorize([ float32(float32, float32, float32, float32, float32, float32)
+            , float64(float64, float64, float64, float64, float64, float64)
+            ])
+    def ufunc_Trise( Ethpi32rho, w2
+                , a, c
+                , md2 # - (xi-xc)**2 - (yi-yc)**2
+                , dt
+                ):
+        _a4dt   = (4*a)*dt
         _a4dtw2 = _a4dt + w2
-        T[i] += ( (Ethpi32rho / c[i]) / (np.sqrt(_a4dt) * _a4dtw2) ) * np.exp( md2 / _a4dtw2 )
+
+        # Compute temperature rise of pulse i at all subsequent times
+        Trise = ( (Ethpi32rho / c) / (np.sqrt(_a4dt) * _a4dtw2) ) * np.exp( md2 / _a4dtw2 )
+        return Trise
+
+
+    @guvectorize([(float64, float64, float64[:], float64[:], float64, float64[:], float64[:])
+                ,(float32, float32, float32[:], float32[:], float32, float32[:], float32[:])
+                ], '(),(),(n),(n),(),(n)->(n)')
+    def gufunc_Trise( Ethpi32rho, w2    # input
+                    , a, c              # input
+                    , md2               # input
+                    , dt                # input
+                    , T  # input/output
+    ):
+        for i in range(T.shape[0]):
+            _a4dt   = (4*a[i])*dt[i]
+            _a4dtw2 = _a4dt + w2
+            T[i] += ( (Ethpi32rho / c[i]) / (np.sqrt(_a4dt) * _a4dtw2) ) * np.exp( md2 / _a4dtw2 )
 
 
 if __name__ == '__main__':
